@@ -1,6 +1,6 @@
+import { getWetherByCity } from './apiService.js'
+
 const vievElems = {};
-
-
 
 const getDOMElem = (id) => {
   return document.getElementById(id);
@@ -37,7 +37,14 @@ const initializeApp = () => {
 
 const onClickSubmit = () => {};
 
-const onEnterSubmit = () => {};
+const onEnterSubmit = (event) => {
+    console.log(event);
+    if (event.key === 'Enter') {
+        let query = vievElems.searchInput.value;
+        getWetherByCity(query)
+        .then(data => console.log(data))
+    }
+};
 
 
 document.addEventListener("DOMContentLoaded", initializeApp);
