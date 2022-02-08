@@ -1,103 +1,89 @@
 import { getWetherByCity } from "./apiService.js";
+import { mapListToDOMElements } from "./DOMActions.js";
 
-const vievElems = {};
-
-const getDOMElem = (id) => {
-  return document.getElementById(id);
-};
-
-const connectHTMLElems = () => {
-  vievElems.mainContainer = getDOMElem("mainContainer");
-  vievElems.weatherSearchView = getDOMElem("weatherSearchView");
-  vievElems.weatherForecastView = getDOMElem("weatherForecastView");
-
-  vievElems.searchInput = getDOMElem("searchInput");
-  vievElems.searchButton = getDOMElem("searchButton");
-  vievElems.weatherCityContainer = getDOMElem("weatherCityContainer");
-
-  vievElems.weatherCity = getDOMElem("weatherCity");
-  vievElems.weatherIcon = getDOMElem("weatherIcon");
-
-  vievElems.weatherCurrentTemp = getDOMElem("weatherCurrentTemp");
-  vievElems.weatherMaxTemp = getDOMElem("weatherMaxTemp");
-  vievElems.weatherMinTemp = getDOMElem("weatherMinTemp");
-
-  vievElems.returnToSearchBtn = getDOMElem("returnToSearchBtn");
-};
-
-const setupListenners = () => {
-  vievElems.searchInput.addEventListener("keydown", onEnterSubmit);
-  vievElems.searchButton.addEventListener("click", onClickSubmit);
-  vievElems.returnToSearchBtn.addEventListener("click", returnToSearch);
-};
-
-const initializeApp = () => {
-  connectHTMLElems();
-  setupListenners();
-};
-
-const onEnterSubmit = (event) => {
-  if (event.key === "Enter") {
-    fadeInOut();
-    let query = vievElems.searchInput.value;
-    getWetherByCity(query).then((data) => {
-      displayWeatherData(data);
-    });
+class WeatherApp {
+  constructor() {
+    this.vievElems = {};
+    this.initializeApp();
   }
-};
-const onClickSubmit = () => {
-  fadeInOut();
-  let query = vievElems.searchInput.value;
-  getWetherByCity(query).then((data) => {
-    displayWeatherData(data);
-  });
-};
 
-const displayWeatherData = (data) => {
-  switchViev();
-  fadeInOut();
+  initializeApp = () => {
+    this.connectDOMElements();
+    this.setupListeners();
+  };
 
-  const weather = data.consolidated_weather[0];
-  vievElems.weatherCity.innerText = data.title;
-  vievElems.weatherIcon.src = `https://www.metaweather.com/static/img/weather/${weather.weather_state_abbr}.svg`;
-  vievElems.weatherIcon.alt = weather.weather_state_name;
+  connectDOMElements = () => {
+    const listOfIds = Array.from(document.querySelectorAll("[id")).map(
+      (elem) => elem.id
+    );
+    this.vievElems = mapListToDOMElements(listOfIds);
+  };
 
-  const currTemp = weather.the_temp.toFixed(2);
-  const maxTemp = weather.max_temp.toFixed(2);
-  const minTemp = weather.min_temp.toFixed(2);
+  setupListeners = () => {
+    this.vievElems.searchInput.addEventListener("keydown", this.handleSubmit);
+    this.vievElems.searchButton.addEventListener("click", this.handleSubmit);
+    this.vievElems.returnToSearchBtn.addEventListener(
+      "click",
+      this.returnToSearch
+    );
+  };
 
-  vievElems.weatherCurrentTemp.innerText = `Current temperature: ${currTemp} °C`;
-  vievElems.weatherMaxTemp.innerText = `Max temperature: ${maxTemp} °C`;
-  vievElems.weatherMinTemp.innerText = `Min temperature: ${minTemp} °C`;
-};
+  handleSubmit = () => {
+    if (event.type === "click" || event.key === "Enter") {
+      this.fadeInOut();
+      let query = this.vievElems.searchInput.value;
+     getWetherByCity(query).then((data) => {
+        this.displayWeatherData(data);
+      });
+    }
+  };
 
-const fadeInOut = () => {
-  if (
-    vievElems.mainContainer.style.opacity === "1" ||
-    vievElems.mainContainer.style.opacity === ""
-  ) {
-    vievElems.mainContainer.style.opacity = "0";
-  } else {
-    vievElems.mainContainer.style.opacity = "1";
-  }
-};
+  fadeInOut = () => {
+    if (
+      this.vievElems.mainContainer.style.opacity === "1" ||
+      this.vievElems.mainContainer.style.opacity === ""
+    ) {
+      this.vievElems.mainContainer.style.opacity = "0";
+    } else {
+      this.vievElems.mainContainer.style.opacity = "1";
+    }
+  };
 
-const switchViev = () => {
-  if (vievElems.weatherSearchView.style.display !== "none") {
-    vievElems.weatherSearchView.style.display = "none";
-    vievElems.weatherForecastView.style.display = "block";
-  } else {
-    vievElems.weatherForecastView.style.display = "none";
-    vievElems.weatherSearchView.style.display = "flex";
-  }
-};
+  switchViev = () => {
+    if (this.vievElems.weatherSearchView.style.display !== "none") {
+      this.vievElems.weatherSearchView.style.display = "none";
+      this.vievElems.weatherForecastView.style.display = "block";
+    } else {
+      this.vievElems.weatherForecastView.style.display = "none";
+      this.vievElems.weatherSearchView.style.display = "flex";
+    }
+  };
 
-const returnToSearch = () => {
-  fadeInOut();
-  setTimeout(() => {
-    switchViev();
-    fadeInOut();
-  }, 500);
-};
+  returnToSearch = () => {
+    this.fadeInOut();
+    setTimeout(() => {
+      this.switchViev();
+      this.fadeInOut();
+    }, 500);
+  };
 
-document.addEventListener("DOMContentLoaded", initializeApp);
+  displayWeatherData = (data) => {
+    this.switchViev();
+    this.fadeInOut();
+
+    const weather = data.consolidated_weather[0];
+    this.vievElems.weatherCity.innerText = data.title;
+    this.vievElems.weatherIcon.src = `https://www.metaweather.com/static/img/weather/${weather.weather_state_abbr}.svg`;
+    this.vievElems.weatherIcon.alt = weather.weather_state_name;
+
+    const currTemp = weather.the_temp.toFixed(2);
+    const maxTemp = weather.max_temp.toFixed(2);
+    const minTemp = weather.min_temp.toFixed(2);
+
+    this.vievElems.weatherCurrentTemp.innerText = `Current temperature: ${currTemp} °C`;
+    this.vievElems.weatherMaxTemp.innerText = `Max temperature: ${maxTemp} °C`;
+    this.vievElems.weatherMinTemp.innerText = `Min temperature: ${minTemp} °C`;
+  };
+}
+
+document.addEventListener("DOMContentLoaded", new WeatherApp());
