@@ -40,16 +40,35 @@ const onEnterSubmit = (event) => {
   if (event.key === "Enter") {
     fadeInOut();
     let query = vievElems.searchInput.value;
-    getWetherByCity(query).then((data) => console.log(data));
-    switchViev();
-    fadeInOut();
+    getWetherByCity(query).then((data) => {
+      displayWeatherData(data);
+    });
   }
 };
-
 const onClickSubmit = () => {
+  fadeInOut();
   let query = vievElems.searchInput.value;
-  getWetherByCity(query).then((data) => console.log(data));
+  getWetherByCity(query).then((data) => {
+    displayWeatherData(data);
+  });
+};
+
+const displayWeatherData = (data) => {
   switchViev();
+  fadeInOut();
+
+  const weather = data.consolidated_weather[0];
+  vievElems.weatherCity.innerText = data.title;
+  vievElems.weatherIcon.src = `https://www.metaweather.com/static/img/weather/${weather.weather_state_abbr}.svg`;
+  vievElems.weatherIcon.alt = weather.weather_state_name;
+
+  const currTemp = weather.the_temp.toFixed(2);
+  const maxTemp = weather.max_temp.toFixed(2);
+  const minTemp = weather.min_temp.toFixed(2);
+
+  vievElems.weatherCurrentTemp.innerText = `Current temperature: ${currTemp} °C`;
+  vievElems.weatherMaxTemp.innerText = `Max temperature: ${maxTemp} °C`;
+  vievElems.weatherMinTemp.innerText = `Min temperature: ${minTemp} °C`;
 };
 
 const fadeInOut = () => {
@@ -79,7 +98,6 @@ const returnToSearch = () => {
     switchViev();
     fadeInOut();
   }, 500);
-  fadeInOut();
 };
 
 document.addEventListener("DOMContentLoaded", initializeApp);

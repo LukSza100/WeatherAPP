@@ -1,0 +1,35 @@
+[33mcommit 91399f8ac40b1a403b2f2cbfb9514fee96af4c05[m[33m ([m[1;36mHEAD -> [m[1;32mdevelop[m[33m)[m
+Author: Łukasz Szafran <szafran@interia.pl>
+Date:   Tue Feb 8 20:17:31 2022 +0100
+
+    Added fading in/out and switching views
+
+[33mcommit 3ee79df5178905eacc5f36de7ec080ced558c115[m[33m ([m[1;31morigin/develop[m[33m)[m
+Author: Łukasz Szafran <szafran@interia.pl>
+Date:   Tue Feb 8 13:39:29 2022 +0100
+
+    Added request chain handling
+
+[33mcommit 07408e37f07ca0cdbebd5f3c2625c3079ccd9857[m
+Author: Łukasz Szafran <szafran@interia.pl>
+Date:   Tue Feb 8 09:43:54 2022 +0100
+
+    Setup connection with DOM elements and added event listener
+
+[33mcommit e2bd85e7b0cefdbc14f5e77e16dd9b4c511bf73f[m
+Author: Łukasz Szafran <szafran@interia.pl>
+Date:   Sun Feb 6 21:56:03 2022 +0100
+
+    Added styling and HTML template
+
+[33mcommit 1362bdff27c39dad6a927c65be84b09aec7ec498[m
+Author: Łukasz Szafran <szafran@interia.pl>
+Date:   Sun Feb 6 21:44:31 2022 +0100
+
+    Created initial project structure
+
+[33mcommit 67e0d9e43a260ec319e600de22958d3818f6dfc0[m[33m ([m[1;32mmain[m[33m)[m
+Author: Łukasz Szafran <79981252+LukSza100@users.noreply.github.com>
+Date:   Sun Feb 6 21:03:57 2022 +0100
+
+    Initial commit
