@@ -32,9 +32,16 @@ class WeatherApp {
     if (event.type === "click" || event.key === "Enter") {
       this.fadeInOut();
       let query = this.vievElems.searchInput.value;
-     getWetherByCity(query).then((data) => {
-        this.displayWeatherData(data);
-      });
+      getWetherByCity(query)
+        .then((data) => {
+          this.displayWeatherData(data);
+          this.vievElems.searchInput.style.borderColor = "black";
+          this.vievElems.searchInput.value = "";
+        })
+        .catch(() => {
+          this.fadeInOut();
+          this.vievElems.searchInput.style.borderColor = "red";
+        });
     }
   };
 
